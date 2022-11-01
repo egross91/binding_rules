@@ -2,8 +2,11 @@ class Foo {
   nonDecorated() {}
   @boundMethod
   decorated() {}
+  @boundMethod("bar")
+  decoratedAcceptingArgs() {}
 
   internal() {
+    this.decoratedAcceptingArgs
     this.decorated
     this.nonDecorated
     ~~~~~~~~~~~~~~~~~ [0]
@@ -11,6 +14,7 @@ class Foo {
 }
 
 const foo = new Foo()
+foo.decoratedAcceptingArgs
 foo.decorated
 foo.nonDecorated
 ~~~~~~~~~~~~~~~~ [0]

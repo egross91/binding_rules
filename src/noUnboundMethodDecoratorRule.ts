@@ -212,9 +212,8 @@ function isDecorated(node: ts.Node, decorator: string): boolean {
         return false
       }
       const res = node.decorators.some(d => {
-        return (
-          isIdentifier(d.expression) && d.expression.escapedText === decorator
-        )
+        const expression = getExpression(d)
+        return isIdentifier(expression) && expression.escapedText === decorator
       })
       return res
     default:
@@ -272,4 +271,12 @@ function isWhitelisted(
     return whitelist.has(callingMethodName)
   }
   return false
+}
+
+function getExpression(decorator: ts.Decorator): ts.LeftHandSideExpression {
+  if (isCallExpression(decorator.expression)) {
+    return (decorator.expression as ts.CallExpression).expression
+  }
+
+  return decorator.expression
 }
